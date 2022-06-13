@@ -1,0 +1,15 @@
+[package]
+name = "ExDateUtil_rrule"
+version = "0.1.0"
+authors = []
+edition = "2018"
+
+[lib]
+name = "ExDateUtil_rrule"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = "0.25.0"
+rrule = "0.7.3"
+chrono = "0.4.19"
