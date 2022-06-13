@@ -1,12 +1,12 @@
 # ExDateUtil
 
-**TODO: Add description**
+**Description**
 Rrule parsing and utils based on rust nif
 
 - https://docs.rs/rrule/latest/rrule/index.html
 - https://github.com/fmeringdal/rust-rrule
 
-
+Only does this for now: ExDateUtil.Rrule.next("DTSTART;TZID=Etc/UTC:20191220T020000\nRRULE:FREQ=MONTHLY;BYMONTHDAY=28,29,30,31;BYSETPOS=-1", 10)
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
