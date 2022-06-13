@@ -11,8 +11,8 @@ fn next(rrule_string: String, limit: u16) -> String {
     println!("{:?}", recurrences);
     return "test".to_string()
 }
-# to implement
-# fn between(rrrule_string)
+// # to implement
+// # fn between(rrrule_string)
 
 
 rustler::init!("Elixir.ExDateUtil.Rrule", [next]);
