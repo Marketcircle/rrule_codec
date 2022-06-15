@@ -3,15 +3,6 @@
 version = 3
 
 [[package]]
-name = "ExDateUtil_rrule"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "rrule",
- "rustler",
-]
-
-[[package]]
 name = "aho-corasick"
 version = "0.7.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -65,6 +56,16 @@ dependencies = [
  "parse-zoneinfo",
  "phf",
  "phf_codegen",
+]
+
+[[package]]
+name = "exdateutil_rrule"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "chrono-tz",
+ "rrule",
+ "rustler",
 ]
 
 [[package]]

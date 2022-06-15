@@ -1,11 +1,11 @@
 [package]
-name = "ExDateUtil_rrule"
+name = "exdateutil_rrule"
 version = "0.1.0"
 authors = []
 edition = "2018"
 
 [lib]
-name = "ExDateUtil_rrule"
+name = "exdateutil_rrule"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 
@@ -13,3 +13,4 @@ crate-type = ["cdylib"]
 rustler = "0.25.0"
 rrule = "0.7.3"
 chrono = "0.4.19"
+chrono-tz = "0.6.1"
