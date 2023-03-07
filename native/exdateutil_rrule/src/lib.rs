@@ -1,14 +1,51 @@
 use rrule::{DateFilter, RRule};
 use chrono::{DateTime, SecondsFormat};
 use chrono_tz::UTC;
+use rustler::{NifStruct};
 
+#[derive(Debug, NifStruct)]
+#[module = "Properties"]
+struct Properties {
+    freq: String,
+    interval: u16,
+    count: String,
+    until: String,
+    week_start: String,
+    by_set_pos: String,
+    by_month: Vec<u8>,
+    by_month_day: Vec<i8>,
+    by_n_month_day: String,
+    by_year_day: Vec<i16>,
+    by_week_no: Vec<i8>,
+    by_weekday: Vec<String>,
+    by_hour: Vec<u8>,
+    by_minute: Vec<u8>,
+    by_second: Vec<u8>,
+    by_easter: String
+}
 
 #[rustler::nif]
-fn properties(rrule_string: String) -> String {
+fn properties(rrule_string: String) -> Properties {
     let rrule: RRule = rrule_string.parse().unwrap();
     let p = rrule.get_properties();
-    println!("{:?}", p);
-    return "p".parse().unwrap();
+    Properties {
+        freq: format!("{:?}", p.freq),
+        interval: p.interval.clone(),
+        count: format!("{:?}", p.count),
+        until: format!("{:?}", p.until),
+        week_start: format!("{:?}", p.week_start),
+        by_set_pos: format!("{:?}", p.by_set_pos),
+        by_month: p.by_month.clone(),
+        by_month_day: p.by_month_day.clone(),
+        by_n_month_day: format!("{:?}", p.by_n_month_day),
+        by_year_day: p.by_year_day.clone(),
+        by_week_no: p.by_week_no.clone(),
+        by_weekday: p.by_weekday.clone().iter().map(|x| format!("{:?}", x)).collect(),
+        by_hour: p.by_hour.clone(),
+        by_minute: p.by_minute.clone(),
+        by_second: p.by_second.clone(),
+        by_easter: format!("{:?}", p.by_easter)
+    }
 }
 
 #[rustler::nif]

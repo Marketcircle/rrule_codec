@@ -15,7 +15,7 @@ by adding `ExDateUtil` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ExDateUtil, "~> 0.1.0"}
+    {:exdateutil, "~> 0.1.0"}
   ]
 end
 ```
