@@ -1,6 +1,9 @@
 defmodule ExDateUtil.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/flickswitch/exdateutils"
+  @version "1.0.0"
+
   def project do
     [
       app: :exdateutil,
@@ -22,10 +25,21 @@ defmodule ExDateUtil.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:rustler, "~> 0.25.0"}
+      {:rustler_precompiled, "~> 0.6.0"},
+      {:rustler, "~> 0.25.0", optional: true}
 
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+    ]
+  end
+
+  defp package do
+    [
+      description: "Rrule parsing",
+      maintainers: ["Flickswitch engineering"],
+      licenses: ["MIT"],
+      files: ~w(lib rrule .formatter.exs README* LICENSE* mix.exs checksum-*.exs),
+      links: %{"GitHub" => @source_url}
     ]
   end
 
@@ -34,7 +48,8 @@ defmodule ExDateUtil.MixProject do
       fmt: [
         "format",
         "cmd cargo fmt --manifest-path native/io/Cargo.toml"
-      ]
+      ],
+      test: [fn _ -> System.put_env("MJML_BUILD", "true") end, "test"]
     ]
   end
 end
