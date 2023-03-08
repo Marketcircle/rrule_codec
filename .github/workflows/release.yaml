@@ -77,9 +77,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_release
     steps:
-      - name: Check out
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        with:
+          otp-version: '25.2'
+          elixir-version: '1.14.2'
+      - run: mix rustler_precompiled.download ExDateUtil.Rrule --all
       - name: Publish package to hex.pm
         uses: wesleimp/action-publish-hex@v1
         env:
