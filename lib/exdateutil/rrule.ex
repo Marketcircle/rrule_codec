@@ -20,7 +20,6 @@ defmodule ExDateUtil.Rrule do
     version: version,
     targets: targets
 
-
   # use Rustler, otp_app: :exdateutil, crate: :exdateutil_rrule
 
   def next(rrule, limit), do: error()

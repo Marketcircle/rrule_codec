@@ -12,7 +12,7 @@ defmodule ExDateUtil.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      package: package(),
+      package: package()
     ]
   end
 
