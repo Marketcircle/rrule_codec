@@ -78,10 +78,10 @@ jobs:
     needs: build_release
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-elixir@v1
+      - uses: erlef/setup-beam@v1
         with:
-          otp-version: '25.2'
-          elixir-version: '1.14.2'
+          otp: '25.2'
+          elixir: '1.14.2'
       - run: mix rustler_precompiled.download ExDateUtil.Rrule --all
       - name: Publish package to hex.pm
         uses: wesleimp/action-publish-hex@v1
