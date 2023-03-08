@@ -17,8 +17,8 @@ defmodule ExDateUtil.Rrule do
   )
 
   use RustlerPrecompiled,
-    otp_app: :mjml,
-    crate: "mjml_nif",
+    otp_app: :exdateutil,
+    crate: "exdateutil_rrule",
     base_url: "#{github_url}/releases/download/v#{version}",
     force_build: System.get_env("RRULE_BUILD") in ["1", "true"],
     version: version,
