@@ -81,6 +81,7 @@ jobs:
           otp-version: '25.2'
           elixir-version: '1.14.2'
       - run: mix deps.get
+      - run: mix compile --force
       - run: mix rustler_precompiled.download ExDateUtil.Rrule --all
       - name: Publish package to hex.pm
         uses: wesleimp/action-publish-hex@v1
