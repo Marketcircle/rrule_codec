@@ -11,7 +11,8 @@ defmodule ExDateUtil.MixProject do
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      package: package(),
     ]
   end
 
@@ -32,10 +33,10 @@ defmodule ExDateUtil.MixProject do
 
   defp package do
     [
-      description: "Rrule parsing",
+      description: "Rrule parser",
       maintainers: ["Flickswitch engineering"],
       licenses: ["MIT"],
-      files: ~w(lib rrule .formatter.exs README* LICENSE* mix.exs checksum-*.exs),
+      files: ~w(lib native .formatter.exs README* LICENSE* mix.exs checksum-*.exs),
       links: %{"GitHub" => @source_url}
     ]
   end
