@@ -1,7 +1,7 @@
 defmodule ExDateUtil.MixProject do
   use Mix.Project
 
-  @source_url "https://github.com/flickswitch/exdateutils"
+  @source_url "https://github.com/Flickswitch/exdateutils"
   @version "1.0.0"
 
   def project do
