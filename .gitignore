@@ -26,3 +26,5 @@ ExDateUtil-*.tar
 /tmp/
 
 /.elixir_ls
+
+checksum-Elixir.ExDateUtil.Rrule.exs
