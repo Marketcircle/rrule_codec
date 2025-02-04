@@ -2,7 +2,7 @@ defmodule ExDateUtil.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/Flickswitch/exdateutils"
-  @version "1.0.0"
+  @version "1.0.1"
 
   def project do
     [
@@ -27,8 +27,8 @@ defmodule ExDateUtil.MixProject do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:rustler_precompiled, "~> 0.6.0"},
-      {:rustler, "~> 0.25.0", optional: true}
+      {:rustler_precompiled, "~> 0.8.2"},
+      {:rustler, "~> 0.36.1", optional: true}
     ]
   end
 
@@ -47,8 +47,7 @@ defmodule ExDateUtil.MixProject do
       fmt: [
         "format",
         "cmd cargo fmt --manifest-path native/exdateutil_rrule/Cargo.toml"
-      ],
-      test: [fn _ -> System.put_env("MJML_BUILD", "true") end, "test"]
+      ]
     ]
   end
 end
