@@ -46,7 +46,7 @@ defmodule ExDateUtil.MixProject do
     [
       fmt: [
         "format",
-        "cmd cargo fmt --manifest-path native/io/Cargo.toml"
+        "cmd cargo fmt --manifest-path native/exdateutil_rrule/Cargo.toml"
       ],
       test: [fn _ -> System.put_env("MJML_BUILD", "true") end, "test"]
     ]
