@@ -2,7 +2,7 @@ defmodule ExDateUtil.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/Flickswitch/exdateutils"
-  @version "1.1.0"
+  @version "1.2.0"
 
   def project do
     [
@@ -35,7 +35,7 @@ defmodule ExDateUtil.MixProject do
   defp package do
     [
       description: "Rrule parser",
-      maintainers: ["Flickswitch engineering"],
+      maintainers: ["Marketcircle"],
       licenses: ["MIT"],
       files: ~w(lib native .formatter.exs README* LICENSE* mix.exs checksum-*.exs),
       links: %{"GitHub" => @source_url}

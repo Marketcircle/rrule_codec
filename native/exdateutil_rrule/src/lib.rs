@@ -31,6 +31,17 @@ enum MaybeDateTime {
     Some(DateTime<Tz>)
 }
 
+
+/// Encoding and decoding implementations for custom types to allow conversion between
+/// Elixir and Rust data structures. These implementations allow Rustler to automatically 
+/// convert between Elixir terms and Rust types when NIFs are called, providing
+/// interoperability between the two languages.
+/// 
+/// The Encoder trait defines how to convert Rust types to Elixir terms.
+/// The Decoder trait defines how to convert Elixir terms to Rust types.
+/// 
+/// If it cannot be converted, it returns an argument error on the elixir side
+
 impl Encoder for MaybeDateTime {
     fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
         match self {
@@ -109,7 +120,20 @@ impl std::fmt::Display for ExternalNWeekday {
     }
 }
 
-
+/// Properties struct maps directly to an Elixir struct in the ExDateUtil.Rrule module.
+/// It represents all the components of an RFC 5545 recurrence rule (RRULE).
+///
+/// This struct is decorated with #[module = "ExDateUtil.Rrule"] to indicate that it
+/// corresponds to the Elixir struct of the same name. Rustler automatically handles
+/// conversion between the Elixir struct and this Rust struct when NIFs are called.
+///
+/// Each field in this struct represents a different component of the RRULE:
+/// - freq: The frequency of recurrence (e.g., "Daily", "Weekly")
+/// - interval: How often the recurrence repeats (e.g., every 2 days)
+/// - count: The number of occurrences (optional)
+/// - until: The end date of the recurrence (optional)
+/// - week_start: The day of the week that starts the week (e.g., "MO" for Monday)
+/// - by_*: Various filters that can be applied to the recurrence
 #[derive(Debug, NifStruct, Default)]
 #[module = "ExDateUtil.Rrule"]
 struct Properties {
@@ -161,6 +185,29 @@ impl std::fmt::Display for Properties {
 }
 
 #[rustler::nif]
+/// Parses an RFC 5545 RRULE string into a structured Properties object
+///
+/// This function takes a string representation of a recurrence rule (RRULE) as defined in RFC 5545
+/// and converts it into a structured Properties object that can be used by Elixir code.
+///
+/// Arguments:
+///
+/// * `rrule_string`: A string containing an RFC 5545 compliant RRULE (e.g., "FREQ=DAILY;INTERVAL=2")
+///
+/// Returns:
+///
+/// * `Ok(Properties)`: A structured representation of the RRULE if parsing succeeds
+/// * `Err`: An error if the RRULE string is malformed or contains invalid values
+///
+/// Examples:
+///
+/// ```
+/// let result = string_to_rrule("FREQ=DAILY;INTERVAL=2;COUNT=10".to_string());
+/// // Returns Ok(Properties with freq="Daily", interval=2, count=Some(10), etc.)
+///
+/// let result = string_to_rrule("FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR".to_string());
+/// // Returns Ok(Properties with freq="Weekly", interval=1, by_weekday=[String("MO"), String("WE"), String("FR")], etc.)
+/// ``` 
 fn string_to_rrule(rrule_string: String) -> NifResult<Properties> {
     match rrule_string.parse::<RRule<Unvalidated>>() {
         Ok(rrule) => Ok(Properties {
@@ -192,6 +239,43 @@ fn string_to_rrule(rrule_string: String) -> NifResult<Properties> {
 }
 
 #[rustler::nif]
+/// Converts a Properties object back into an RFC 5545 RRULE string
+///
+/// This function takes a Properties object that represents a recurrence rule and
+/// converts it back into a string representation that follows the RFC 5545 RRULE format.
+///
+/// Arguments:
+///
+/// * `p`: A Properties struct containing the RRULE parameters
+///
+/// Returns:
+///
+/// * `Ok(String)`: The string representation of the RRULE if conversion succeeds
+/// * `Err`: An error if the Properties object contains invalid values
+///
+/// Examples:
+///
+/// ```
+/// let props = Properties {
+///     freq: "Daily".to_string(),
+///     interval: 2,
+///     count: MaybeCount::Some(10),
+///     // ... other fields with default values
+/// };
+/// let result = rrule_to_string(props);
+/// // Returns Ok("FREQ=DAILY;INTERVAL=2;COUNT=10")
+///
+/// let props = Properties {
+///     freq: "Weekly".to_string(),
+///     interval: 1,
+///     by_weekday: vec![ExternalNWeekday::String("MO".to_string()), 
+///                      ExternalNWeekday::String("WE".to_string()),
+///                      ExternalNWeekday::String("FR".to_string())],
+///     // ... other fields with default values
+/// };
+/// let result = rrule_to_string(props);
+/// // Returns Ok("FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR")
+/// ```
 fn rrule_to_string(p: Properties) -> NifResult<String>  {
     match properties_to_rrule(p) {
         Ok(rrule) => return Ok(format!("{}", rrule)),
@@ -203,6 +287,44 @@ fn rrule_to_string(p: Properties) -> NifResult<String>  {
 }
 
 #[rustler::nif]
+/// Validates if a recurrence rule is properly formed with respect to a start date
+///
+/// This function checks if the given Properties object represents a valid recurrence rule
+/// when combined with the provided start date. The validation includes checking if all
+/// rule components are consistent with each other and with the start date.
+///
+/// Arguments:
+///
+/// * `env`: The NIF environment
+/// * `p`: A Properties struct containing the RRULE parameters
+/// * `dt_start`: A string containing an RFC 3339 formatted date-time for the rule's start date
+///
+/// Returns:
+///
+/// * `Ok(atom::ok())`: If the RRULE is valid
+/// * `Err`: An error describing why the RRULE is invalid
+///
+/// Examples:
+///
+/// ```
+/// let props = Properties {
+///     freq: "Monthly".to_string(),
+///     interval: 1,
+///     by_month_day: vec![31],
+///     // ... other fields with default values
+/// };
+/// let result = validate_rrule(env, props, "2023-04-01T00:00:00Z".to_string());
+/// // Returns Ok(atom::ok())
+///
+/// let props = Properties {
+///     freq: "Monthly".to_string(),
+///     interval: 1,
+///     by_month_day: vec![31],
+///     // ... other fields with default values
+/// };
+/// let result = validate_rrule(env, props, "2023-02-01T00:00:00Z".to_string());
+/// // Returns Err with message about February not having 31 days
+/// ```
 fn validate_rrule(env: Env, p: Properties, dt_start: String) -> NifResult<Term> {
     let dt_start = match DateTime::parse_from_rfc3339(&dt_start) {
         Ok(dt) => dt.with_timezone(&Tz::UTC),
@@ -223,13 +345,45 @@ fn validate_rrule(env: Env, p: Properties, dt_start: String) -> NifResult<Term> 
     match rrule.validate(dt_start) {
         Ok(_) => Ok(atoms::ok().encode(env)),
         Err(e) => {
-            let error_message = format!("Error validating rrule: {:?}", e);
+            let error_message = format!("Invalid rrule: {:?}", e);
             return Err(rustler::Error::Term(Box::new(error_message)));
         }
     }
 }
 
-// for internal use to this library only
+/// Converts a Properties object to an internal RRule<Unvalidated> representation
+///
+/// This function is for internal use only and converts the Properties struct that is
+/// used for communication with Elixir code to the internal RRule<Unvalidated> type used 
+/// by the rrule library.
+///
+/// Arguments:
+///
+/// * `p`: A Properties struct containing the RRULE parameters
+///
+/// Returns:
+///
+/// * `Ok(RRule<Unvalidated>)`: The internal representation of the recurrence rule
+/// * `Err`: An error if conversion fails due to invalid values
+///
+/// Examples:
+///
+/// ```
+/// let props = Properties {
+///     freq: "Daily".to_string(),
+///     interval: 2,
+///     // ... other fields
+/// };
+/// let result = properties_to_rrule(props);
+/// // Returns Ok(RRule<Unvalidated> instance)
+///
+/// let props = Properties {
+///     freq: "InvalidFreq".to_string(),
+///     // ... other fields
+/// };
+/// let result = properties_to_rrule(props);
+/// // Returns Err with message about invalid frequency
+/// ```
 fn properties_to_rrule(p: Properties) -> Result<RRule<Unvalidated>, rustler::Error> {
     let frequency = match p.freq.as_str() {
         "Secondly" => rrule::Frequency::Secondly,
