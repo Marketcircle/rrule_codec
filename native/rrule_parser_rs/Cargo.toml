@@ -1,7 +1,7 @@
 [package]
 name = "rrule_parser_rs"
-version = "0.2.0"
-authors = []
+version = "0.1.0"
+authors = ["Chris Hopkins"]
 edition = "2024"
 
 [lib]

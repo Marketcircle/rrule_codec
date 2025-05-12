@@ -2,7 +2,7 @@ defmodule RruleParser.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/team-alebmic/rrule_parser"
-  @version "1.2.0"
+  @version "0.1.1"
 
   def project do
     [
