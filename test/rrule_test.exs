@@ -1,4 +1,4 @@
-defmodule ExDateUtil.RruleTest do
+defmodule RruleParser.RruleTest do
   use ExUnit.Case
-  doctest ExDateUtil.Rrule
+  doctest RruleParser.Rrule
 end

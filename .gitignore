@@ -20,13 +20,13 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-ExDateUtil-*.tar
+RruleParser-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
 
 /.elixir_ls
 
-checksum-Elixir.ExDateUtil.Rrule.Api.exs
+checksum-Elixir.RruleParser.Rrule.Api.exs
 
 .envrc

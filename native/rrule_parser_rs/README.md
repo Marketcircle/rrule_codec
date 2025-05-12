@@ -1,4 +1,4 @@
-# NIF for Elixir.ExDateUtil.Rrule
+# NIF for Elixir.RruleParser.Rrule
 
 ## To build the NIF module:
 
@@ -7,8 +7,8 @@
 ## To load the NIF:
 
 ```elixir
-defmodule ExDateUtil.Rrule do
-    use Rustler, otp_app: :ExDateUtil, crate: "ExDateUtil_rrule"
+defmodule RruleParser.Rrule do
+    use Rustler, otp_app: :RruleParser, crate: "RruleParser_rrule"
 
     # When your NIF is loaded, it will override this function.
     def add(_a, _b), do: :erlang.nif_error(:nif_not_loaded)

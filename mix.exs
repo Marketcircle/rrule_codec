@@ -1,12 +1,12 @@
-defmodule ExDateUtil.MixProject do
+defmodule RruleParser.MixProject do
   use Mix.Project
 
-  @source_url "https://github.com/Flickswitch/exdateutils"
+  @source_url "https://github.com/team-alebmic/rrule_parser"
   @version "1.2.0"
 
   def project do
     [
-      app: :exdateutil,
+      app: :rrule_parser,
       version: @version,
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
@@ -46,7 +46,7 @@ defmodule ExDateUtil.MixProject do
     [
       fmt: [
         "format",
-        "cmd cargo fmt --manifest-path native/exdateutil_rrule/Cargo.toml"
+        "cmd cargo fmt --manifest-path native/rrule_parser_rs/Cargo.toml"
       ]
     ]
   end

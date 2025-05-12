@@ -1,11 +1,11 @@
 [package]
-name = "exdateutil_rrule"
+name = "rrule_parser_rs"
 version = "0.2.0"
 authors = []
 edition = "2024"
 
 [lib]
-name = "exdateutil_rrule"
+name = "rrule_parser_rs"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 
