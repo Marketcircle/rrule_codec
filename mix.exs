@@ -1,12 +1,12 @@
-defmodule RruleParser.MixProject do
+defmodule RruleCodec.MixProject do
   use Mix.Project
 
-  @source_url "https://github.com/team-alebmic/rrule_parser"
-  @version "0.1.1"
+  @source_url "https://github.com/team-alebmic/rrule_codec"
+  @version "0.1.2"
 
   def project do
     [
-      app: :rrule_parser,
+      app: :rrule_codec,
       version: @version,
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
@@ -34,7 +34,7 @@ defmodule RruleParser.MixProject do
 
   defp package do
     [
-      description: "Rrule parser",
+      description: "Rrule codec",
       maintainers: ["Marketcircle"],
       licenses: ["MIT"],
       files: ~w(lib native .formatter.exs README* LICENSE* mix.exs checksum-*.exs),
@@ -46,7 +46,7 @@ defmodule RruleParser.MixProject do
     [
       fmt: [
         "format",
-        "cmd cargo fmt --manifest-path native/rrule_parser_rs/Cargo.toml"
+        "cmd cargo fmt --manifest-path native/rrule_codec_rs/Cargo.toml"
       ]
     ]
   end

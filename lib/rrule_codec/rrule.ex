@@ -1,4 +1,4 @@
-defmodule RruleParser.Rrule do
+defmodule RruleCodec.Rrule do
 
   ### TODO FIX DOCTESTS
 
@@ -7,7 +7,7 @@ defmodule RruleParser.Rrule do
 
   This module offers a convenient Elixir API for creating, parsing, and validating
   recurrence rules as defined in the iCalendar RFC 5545 specification. It serves
-  as a user-friendly wrapper around the lower-level `RruleParser.Rrule.Api` module,
+  as a user-friendly wrapper around the lower-level `RruleCodec.Rrule.Api` module,
   which in turn calls optimized Rust NIFs.
 
   ## Key features
@@ -20,19 +20,19 @@ defmodule RruleParser.Rrule do
   ## Example usage
 
       # Create a weekly recurrence rule
-      rrule = RruleParser.Rrule.build(:weekly, interval: 2, by_weekday: ["MO", "WE", "FR"])
+      rrule = RruleCodec.Rrule.build(:weekly, interval: 2, by_weekday: ["MO", "WE", "FR"])
 
       # Validate it against a start date
-      RruleParser.Rrule.validate(rrule, "2023-01-01T09:00:00Z")
+      RruleCodec.Rrule.validate(rrule, "2023-01-01T09:00:00Z")
       # => :ok
 
       # Convert to string format
-      {:ok, rrule_string} = RruleParser.Rrule.to_string(rrule)
+      {:ok, rrule_string} = RruleCodec.Rrule.to_string(rrule)
       # => {:ok, "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,WE,FR"}
 
       # Parse from string format
-      {:ok, parsed_rrule} = RruleParser.Rrule.from_string("FREQ=DAILY;COUNT=10")
-      # => {:ok, %RruleParser.Rrule{freq: "Daily", interval: 1, count: 10, ...}}
+      {:ok, parsed_rrule} = RruleCodec.Rrule.from_string("FREQ=DAILY;COUNT=10")
+      # => {:ok, %RruleCodec.Rrule{freq: "Daily", interval: 1, count: 10, ...}}
   """
 
 
@@ -96,21 +96,21 @@ defmodule RruleParser.Rrule do
 
   ## Returns
 
-    * `%RruleParser.Rrule{}` - A struct representing the recurrence rule
+    * `%RruleCodec.Rrule{}` - A struct representing the recurrence rule
 
   ## Examples
 
       # Daily recurrence
-      iex> RruleParser.Rrule.build(:daily, interval: 1)
-      %RruleParser.Rrule{freq: "Daily", interval: 1, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: [], by_hour: [], by_minute: [], by_second: []}
+      iex> RruleCodec.Rrule.build(:daily, interval: 1)
+      %RruleCodec.Rrule{freq: "Daily", interval: 1, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: [], by_hour: [], by_minute: [], by_second: []}
 
       # Weekly recurrence on Monday, Wednesday, and Friday
-      iex> RruleParser.Rrule.build(:weekly, by_weekday: ["MO", "WE", "FR"])
-      %RruleParser.Rrule{freq: "Weekly", interval: 1, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: ["MO", "WE", "FR"], by_hour: [], by_minute: [], by_second: []}
+      iex> RruleCodec.Rrule.build(:weekly, by_weekday: ["MO", "WE", "FR"])
+      %RruleCodec.Rrule{freq: "Weekly", interval: 1, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: ["MO", "WE", "FR"], by_hour: [], by_minute: [], by_second: []}
 
       # Monthly recurrence with count limit
-      iex> RruleParser.Rrule.build(:monthly, count: 10)
-      %RruleParser.Rrule{freq: "Monthly", interval: 1, count: 10, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: [], by_hour: [], by_minute: [], by_second: []}
+      iex> RruleCodec.Rrule.build(:monthly, count: 10)
+      %RruleCodec.Rrule{freq: "Monthly", interval: 1, count: 10, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: [], by_hour: [], by_minute: [], by_second: []}
 
   ## Raises
 
@@ -136,7 +136,7 @@ defmodule RruleParser.Rrule do
   end
 
   @doc """
-  Parses an RFC 5545 RRULE string into a structured `RruleParser.Rrule` struct.
+  Parses an RFC 5545 RRULE string into a structured `RruleCodec.Rrule` struct.
 
   This function takes a string representation of a recurrence rule (RRULE) as defined in RFC 5545
   and converts it into a structured Elixir struct.
@@ -147,35 +147,35 @@ defmodule RruleParser.Rrule do
 
   ## Returns
 
-    * `{:ok, %RruleParser.Rrule{}}` - A structured representation of the RRULE if parsing succeeds
+    * `{:ok, %RruleCodec.Rrule{}}` - A structured representation of the RRULE if parsing succeeds
     * `{:error, reason}` - An error if the RRULE string is malformed or contains invalid values
 
   ## Examples
 
-      iex> RruleParser.Rrule.from_string("FREQ=DAILY;INTERVAL=2;COUNT=10")
-      {:ok, %RruleParser.Rrule{freq: "Daily", interval: 2, count: 10, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: [], by_hour: [], by_minute: [], by_second: []}}
+      iex> RruleCodec.Rrule.from_string("FREQ=DAILY;INTERVAL=2;COUNT=10")
+      {:ok, %RruleCodec.Rrule{freq: "Daily", interval: 2, count: 10, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: [], by_hour: [], by_minute: [], by_second: []}}
 
-      iex> RruleParser.Rrule.from_string("FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR")
-      {:ok, %RruleParser.Rrule{freq: "Weekly", interval: 1, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: ["Mon", "Wed", "Fri"], by_hour: [], by_minute: [], by_second: []}}
+      iex> RruleCodec.Rrule.from_string("FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR")
+      {:ok, %RruleCodec.Rrule{freq: "Weekly", interval: 1, week_start: "Mon", by_set_pos: [], by_month: [], by_month_day: [], by_year_day: [], by_week_no: [], by_weekday: ["Mon", "Wed", "Fri"], by_hour: [], by_minute: [], by_second: []}}
 
-      iex> RruleParser.Rrule.from_string("INVALID")
+      iex> RruleCodec.Rrule.from_string("INVALID")
       {:error, "Error parsing rrule: ParserError(InvalidParameterFormat(\\\"INVALID\\\"))"}
   """
   def from_string(rrule_string) when is_binary(rrule_string) do
     rrule_string
-    |> RruleParser.Rrule.Api.string_to_rrule()
+    |> RruleCodec.Rrule.Api.string_to_rrule()
     |> tuple_wrap()
   end
 
   @doc """
-  Converts an `RruleParser.Rrule` struct back into an RFC 5545 RRULE string.
+  Converts an `RruleCodec.Rrule` struct back into an RFC 5545 RRULE string.
 
   This function takes an Elixir struct that represents a recurrence rule and
   converts it back into a string representation that follows the RFC 5545 RRULE format.
 
   ## Parameters
 
-    * `rrule` - An `RruleParser.Rrule` struct containing the RRULE parameters
+    * `rrule` - An `RruleCodec.Rrule` struct containing the RRULE parameters
 
   ## Returns
 
@@ -184,34 +184,34 @@ defmodule RruleParser.Rrule do
 
   ## Examples
 
-      iex> rrule = %RruleParser.Rrule{freq: "Daily", interval: 2, count: 10}
-      iex> RruleParser.Rrule.to_string(rrule)
+      iex> rrule = %RruleCodec.Rrule{freq: "Daily", interval: 2, count: 10}
+      iex> RruleCodec.Rrule.to_string(rrule)
       {:ok, "FREQ=DAILY;COUNT=10;INTERVAL=2"}
 
-      iex> rrule = %RruleParser.Rrule{freq: "Weekly", interval: 1, by_weekday: ["Mon", "Wed", "Fri"]}
-      iex> RruleParser.Rrule.to_string(rrule)
+      iex> rrule = %RruleCodec.Rrule{freq: "Weekly", interval: 1, by_weekday: ["Mon", "Wed", "Fri"]}
+      iex> RruleCodec.Rrule.to_string(rrule)
       {:ok, "FREQ=WEEKLY;BYDAY=MO,WE,FR"}
 
-      iex> rrule = %RruleParser.Rrule{freq: "InvalidFreq", interval: 1, week_start: "Mon", by_set_pos: []}
-      iex> RruleParser.Rrule.to_string(rrule)
+      iex> rrule = %RruleCodec.Rrule{freq: "InvalidFreq", interval: 1, week_start: "Mon", by_set_pos: []}
+      iex> RruleCodec.Rrule.to_string(rrule)
       {:error, "Error converting properties to rrule: {error, {:error, <term>}}"}
   """
   def to_string(%__MODULE__{} = rrule) do
     rrule
-    |> RruleParser.Rrule.Api.rrule_to_string()
+    |> RruleCodec.Rrule.Api.rrule_to_string()
     |> tuple_wrap()
   end
 
   @doc """
   Validates if a recurrence rule is properly formed with respect to a start date.
 
-  This function checks if the given `RruleParser.Rrule` struct represents a valid recurrence rule
+  This function checks if the given `RruleCodec.Rrule` struct represents a valid recurrence rule
   when combined with the provided start date. The validation includes checking if all
   rule components are consistent with each other and with the start date.
 
   ## Parameters
 
-    * `rrule` - An `RruleParser.Rrule` struct containing the RRULE parameters
+    * `rrule` - An `RruleCodec.Rrule` struct containing the RRULE parameters
     * `dt_start` - A string containing an RFC 3339 formatted date-time for the rule's start date
 
   ## Returns
@@ -221,21 +221,21 @@ defmodule RruleParser.Rrule do
 
   ## Examples
 
-      iex> rrule = RruleParser.Rrule.build(:weekly, interval: 1, by_weekday: ["Mon", "Wed", "Fri"])
-      iex> RruleParser.Rrule.validate(rrule, "2023-04-01T00:00:00Z")
+      iex> rrule = RruleCodec.Rrule.build(:weekly, interval: 1, by_weekday: ["Mon", "Wed", "Fri"])
+      iex> RruleCodec.Rrule.validate(rrule, "2023-04-01T00:00:00Z")
       :ok
 
-      iex> rrule = RruleParser.Rrule.build(:monthly, interval: 1,  by_month_day: [35])
-      iex> RruleParser.Rrule.validate(rrule, "2023-02-01T00:00:00Z")
+      iex> rrule = RruleCodec.Rrule.build(:monthly, interval: 1,  by_month_day: [35])
+      iex> RruleCodec.Rrule.validate(rrule, "2023-02-01T00:00:00Z")
       {:error, "Invalid rrule: ValidationError(InvalidFieldValueRange { field: \\\"BYMONTHDAY\\\", value: \\\"35\\\", start_idx: \\\"-31\\\", end_idx: \\\"31\\\" })"}
 
-      iex> rrule = %RruleParser.Rrule{freq: "Monthly", interval: 1, by_set_pos: []}
-      iex> RruleParser.Rrule.validate(rrule, "invalid-date")
+      iex> rrule = %RruleCodec.Rrule{freq: "Monthly", interval: 1, by_set_pos: []}
+      iex> RruleCodec.Rrule.validate(rrule, "invalid-date")
       {:error, "Invalid datetime: invalid-date"}
   """
   def validate(%__MODULE__{} = rrule, dt_start) do
     rrule
-    |> RruleParser.Rrule.Api.validate_rrule(dt_start)
+    |> RruleCodec.Rrule.Api.validate_rrule(dt_start)
   end
 
   defp parse_frequency(as_atom) do
