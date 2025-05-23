@@ -1,6 +1,6 @@
 [package]
 name = "rrule_codec_rs"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Chris Hopkins"]
 edition = "2024"
 

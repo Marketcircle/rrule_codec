@@ -2,7 +2,7 @@ defmodule RruleCodec.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/team-alebmic/rrule_codec"
-  @version "0.1.3"
+  @version "0.1.4"
 
   def project do
     [
