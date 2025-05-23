@@ -20,13 +20,17 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-RruleParser-*.tar
+rrule_codec-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
 
 /.elixir_ls
 
-checksum-Elixir.RruleParser.Rrule.Api.exs
+checksum-Elixir.RruleCodec.Rrule.Api.exs
+
+priv/native/*.so
+priv/native/*.dll
+priv/native/*.dylib
 
 .envrc

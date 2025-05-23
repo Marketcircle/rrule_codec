@@ -1,4 +1,4 @@
-defmodule RruleParser.RruleTest do
+defmodule RruleCodec.RruleTest do
   use ExUnit.Case
-  doctest RruleParser.Rrule
+  doctest RruleCodec.Rrule
 end

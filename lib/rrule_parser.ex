@@ -1,3 +1,3 @@
-defmodule RruleParser do
+defmodule RruleCodec do
   @moduledoc false
 end

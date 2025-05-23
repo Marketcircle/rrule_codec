@@ -1,11 +1,11 @@
 [package]
-name = "rrule_parser_rs"
-version = "0.1.0"
+name = "rrule_codec_rs"
+version = "0.1.2"
 authors = ["Chris Hopkins"]
 edition = "2024"
 
 [lib]
-name = "rrule_parser_rs"
+name = "rrule_codec_rs"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
 

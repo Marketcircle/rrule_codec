@@ -120,10 +120,10 @@ impl std::fmt::Display for ExternalNWeekday {
     }
 }
 
-/// Properties struct maps directly to an Elixir struct in the RruleParser.Rrule module.
+/// Properties struct maps directly to an Elixir struct in the RruleCodec.Rrule module.
 /// It represents all the components of an RFC 5545 recurrence rule (RRULE).
 ///
-/// This struct is decorated with #[module = "RruleParser.Rrule"] to indicate that it
+/// This struct is decorated with #[module = "RruleCodec.Rrule"] to indicate that it
 /// corresponds to the Elixir struct of the same name. Rustler automatically handles
 /// conversion between the Elixir struct and this Rust struct when NIFs are called.
 ///
@@ -135,7 +135,7 @@ impl std::fmt::Display for ExternalNWeekday {
 /// - week_start: The day of the week that starts the week (e.g., "MO" for Monday)
 /// - by_*: Various filters that can be applied to the recurrence
 #[derive(Debug, NifStruct, Default)]
-#[module = "RruleParser.Rrule"]
+#[module = "RruleCodec.Rrule"]
 struct Properties {
     freq: String,
     interval: u16,
@@ -485,5 +485,5 @@ fn properties_to_rrule(p: Properties) -> Result<RRule<Unvalidated>, rustler::Err
 
 
 rustler::init!(
-    "Elixir.RruleParser.Rrule.Api"
+    "Elixir.RruleCodec.Rrule.Api"
 );

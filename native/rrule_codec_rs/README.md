@@ -1,4 +1,4 @@
-# NIF for Elixir.RruleParser.Rrule
+# NIF for Elixir.RruleCodec.Rrule
 
 ## To build the NIF module:
 
@@ -7,8 +7,8 @@
 ## To load the NIF:
 
 ```elixir
-defmodule RruleParser.Rrule do
-    use Rustler, otp_app: :RruleParser, crate: "RruleParser_rrule"
+defmodule RruleCodec.Rrule do
+    use Rustler, otp_app: :RruleCodec, crate: "RruleCodec_rrule"
 
     # When your NIF is loaded, it will override this function.
     def add(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
