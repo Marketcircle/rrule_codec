@@ -1,5 +1,8 @@
 # RruleCodec
 
+> This is based upon the [exdateutils](https://hex.pm/packages/exdateutil) package. However it has been adapted to our uses.
+> Thank you to the team at [flickswitch](https://hex.pm/users/flickswitch-engineering)
+
 **Description**
 Rrule parsing and utils based on rust nif
 
@@ -15,12 +18,8 @@ by adding `rrule_codec` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rrule_codec, "~> 0.1.0"}
+    {:rrule_codec, github: "https://github.com/Marketcircle/rrule_codec", tag: "v0.1.4"}
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/rrule_codec>.
 
