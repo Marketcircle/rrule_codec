@@ -338,7 +338,7 @@ dependencies = [
 
 [[package]]
 name = "rrule_codec_rs"
-version = "0.1.6"
+version = "0.1.7"
 dependencies = [
  "chrono",
  "chrono-tz 0.6.3",
