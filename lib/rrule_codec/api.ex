@@ -53,8 +53,8 @@ defmodule RruleCodec.Rrule.Api do
     otp_app: :rrule_codec,
     crate: "rrule_codec_rs",
     base_url: "#{github_url}/releases/download/v#{version}",
-    force_build: System.get_env("RRULE_BUILD") in ["1", "true"],
     version: version,
+    force_build: System.get_env("RRULE_BUILD") in ["1", "true"],
     targets: targets
 
   @doc """
