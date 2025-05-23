@@ -18,7 +18,7 @@ by adding `rrule_codec` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rrule_codec, github: "https://github.com/Marketcircle/rrule_codec", tag: "v0.1.4"}
+    {:rrule_codec, github: "https://github.com/Marketcircle/rrule_codec", tag: "v0.1.6"}
   ]
 end
 ```
