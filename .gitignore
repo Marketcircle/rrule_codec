@@ -27,8 +27,6 @@ rrule_codec-*.tar
 
 /.elixir_ls
 
-checksum-Elixir.RruleCodec.Rrule.Api.exs
-
 priv/native/*.so
 priv/native/*.dll
 priv/native/*.dylib
