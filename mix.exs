@@ -2,7 +2,7 @@ defmodule RruleCodec.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/Marketcircle/rrule_codec"
-  @version "0.1.7"
+  @version "0.1.8"
 
   def project do
     [
@@ -27,7 +27,7 @@ defmodule RruleCodec.MixProject do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:rustler_precompiled, "~> 0.7.0"},
+      {:rustler_precompiled, "~> 0.8.2"},
       {:rustler, "~> 0.36.1", optional: true}
     ]
   end
