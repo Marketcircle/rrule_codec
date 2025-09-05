@@ -96,7 +96,7 @@ jobs:
           find . -type f -name "*.tar.gz" | while read file; do
             checksum=$(sha256sum "$file" | cut -d' ' -f1)
             filename=$(basename "$file")
-            echo "\"$filename\" => \"$checksum\"," >> ../temp_checksums.txt
+            echo "\"$filename\" => \"sha256:$checksum\"," >> ../temp_checksums.txt
           done
           
           cd ..
