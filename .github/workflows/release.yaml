@@ -66,10 +66,16 @@ jobs:
           path: ${{ steps.build-crate.outputs.file-path }}
 
   publish_release:
-    name: Create GitHub Release
+    name: Create GitHub Release and Update Checksums
     needs: build_release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Need full history for force push
+          
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -77,8 +83,55 @@ jobs:
       
       - name: List downloaded artifacts
         run: find artifacts -type f | sort
+        
+      - name: Generate checksums and update checksum file
+        run: |
+          # Generate checksums for all NIF binaries
+          cd artifacts
+          
+          # Create temporary checksum data
+          echo "# Generated checksums for ${{ github.ref_name }}" > ../temp_checksums.txt
+          
+          # Generate checksums for each file
+          find . -type f -name "*.tar.gz" | while read file; do
+            checksum=$(sha256sum "$file" | cut -d' ' -f1)
+            filename=$(basename "$file")
+            echo "\"$filename\" => \"$checksum\"," >> ../temp_checksums.txt
+          done
+          
+          cd ..
+          
+          # Update the checksum file (you'll need to adapt this format)
+          # This assumes the checksum file has a specific Elixir format
+          cat > checksum-Elixir.RruleCodec.Rrule.Api.exs << 'EOF'
+          # Checksums for precompiled NIFs - ${{ github.ref_name }}
+          %{
+          EOF
+          
+          # Add the checksums (remove the last comma)
+          sed '$s/,$//' temp_checksums.txt | grep -v "^#" >> checksum-Elixir.RruleCodec.Rrule.Api.exs
+          
+          echo "}" >> checksum-Elixir.RruleCodec.Rrule.Api.exs
+          
+          
+      - name: Commit checksums and force push tag
+        run: |
+          # Configure git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Commit the updated checksum file
+          git add checksum-Elixir.RruleCodec.Rrule.Api.exs
+          git commit -m "chore: update checksums for ${{ github.ref_name }}"
+          git push origin HEAD:main
+          
+          # Force push the tag to point to the new commit with checksums
+          git tag -f ${{ github.ref_name }}
+          git push origin ${{ github.ref_name }} --force
       
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: artifacts/**/*
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
